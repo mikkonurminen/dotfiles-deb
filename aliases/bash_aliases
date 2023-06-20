@@ -1,0 +1,19 @@
+alias ..="cd .."
+alias ...="cd ../.."
+
+alias lsa="ls -a" 
+alias lsla="ls -la" 
+alias home="cd ~"
+
+alias mkdir="mkdir -p" 
+alias mv="mv -i" 
+alias rm="rm -i"
+
+alias conf="cd ~/.config/"
+alias dot="cd ~/.dotfiles-rasp/"
+
+alias v="nvim"
+alias vi="nvim"
+
+alias temp="/usr/bin/vcgencmd measure_temp"
+
