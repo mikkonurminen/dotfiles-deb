@@ -8,7 +8,10 @@ null_ls.setup({
   sources = {
     formatting.prettier,
     formatting.stylua,
+    formatting.black,
     diagnostics.eslint_d,
+    diagnostics.mypy,
+    diagnostics.ruff,
   },
   -- Autoformat on save
   on_attach = function(client, bufnr)

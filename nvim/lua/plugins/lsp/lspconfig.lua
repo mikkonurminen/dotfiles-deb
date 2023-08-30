@@ -28,6 +28,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
     --vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, {})
+    vim.keymap.set("n", "<leader>fd", require("telescope.builtin").diagnostics, {})
     --vim.keymap.set('n', '<space>f', function()
     -- vim.lsp.buf.format { async = true }
     --end, opts)
@@ -37,6 +38,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- Setup language servers.
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local on_attach = require("cmp_nvim_lsp").on_attach
 
 lspconfig.lua_ls.setup({
   capabilities = capabilities,
@@ -63,4 +65,8 @@ lspconfig.cssls.setup({
 })
 lspconfig.html.setup({
   capabilities = capabilities,
+})
+lspconfig.pyright.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
 })

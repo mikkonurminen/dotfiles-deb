@@ -7,6 +7,7 @@ require("mason-lspconfig").setup({
     "eslint",
     "cssls",
     "html",
+    "pyright",
   },
 })
 
@@ -17,5 +18,8 @@ mason_null_ls.setup({
     "prettier",
     "stylua",
     "eslint_d",
+    "black",
+    "mypy",
+    "ruff",
   },
 })
