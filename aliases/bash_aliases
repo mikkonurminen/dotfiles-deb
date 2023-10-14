@@ -2,7 +2,7 @@ alias ..="cd .."
 alias ...="cd ../.."
 
 alias lsa="ls -a" 
-alias lsla="ls -la" 
+alias lsla="ls -lah" 
 alias home="cd ~"
 
 alias mkdir="mkdir -p" 
