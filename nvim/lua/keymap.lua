@@ -1,5 +1,5 @@
 local function map(m, k, v)
-  vim.keymap.set(m, k, v, { silent = true })
+	vim.keymap.set(m, k, v, { silent = true })
 end
 
 -- Navigate within insert mode
@@ -45,8 +45,8 @@ map("n", "<C-Left>", ":vertical resize -2<CR>")
 map("n", "<C-Right>", ":vertical resize +2<CR>")
 
 -- Move to the next/previous buffer
-map("n", "<leader>[", "<CMD>bp<CR>")
-map("n", "<leader>]", "<CMD>bn<CR>")
+map("n", "<leader>[", "<CMD>BufferLineCycleNext<CR>")
+map("n", "<leader>]", "<CMD>BufferLineCyclePrev<CR>")
 
 -- Split windows
 map("n", "<leader>vs", "<CMD>vsplit<CR>")
@@ -72,8 +72,21 @@ map("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 map("n", "<C-n>", ":NvimTreeToggle<CR>")
 map("n", "<leader>nf", ":NvimTreeFocus<CR>")
 
--- null-ls format file
-map("n", "<leader>lf", "<CMD>lua vim.lsp.buf.format({ timeout_ms = 2000 })<CR>")
+-- Format code
+--map("n", "<leader>lf", "<CMD>lua vim.lsp.buf.format({ timeout_ms = 2000 })<CR>")
 
 -- which-key
-map("n", "<leader>wk", "<CMD>WhichKey<CR>")
+local function which_key()
+	require("which-key").show({ global = false })
+end
+map("n", "<leader>?", which_key, { desc = "Buffer Local Keymaps (which-key)" })
+
+-- Toggle light/dark background
+local function toggle_background()
+	if vim.o.background == "light" then
+		vim.o.background = "dark"
+	else
+		vim.o.background = "light"
+	end
+end
+map("n", "<leader>bt", toggle_background, { desc = "Toggle background light/dark" })

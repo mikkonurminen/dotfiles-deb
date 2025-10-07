@@ -18,7 +18,7 @@ packer.startup(function(use)
   -- Packer can manage itself
   use("wbthomason/packer.nvim")
 
-  -- Required plugin
+  -- Required plugi
   use({ "nvim-lua/plenary.nvim" })
 
   --use {

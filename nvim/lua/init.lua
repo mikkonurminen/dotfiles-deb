@@ -1,3 +1,4 @@
-require("plugins")
-require("settings")
-require("keymap")
+-- require("plugins")
+-- require("settings")
+-- require("keymap")
+-- require("autocommands")

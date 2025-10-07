@@ -1,49 +1,50 @@
-local actions = require "telescope.actions"
+return {
+  'nvim-telescope/telescope.nvim', branch = '0.1.x',
+  dependencies = { 
+    'nvim-lua/plenary.nvim',
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-tree/nvim-web-devicons",
+  },
 
-require('telescope').setup({
-  defaults = {
-    mappings = {
-      i = {
-        ["<C-v>"] = actions.select_vertical,
-        ["<C-h>"] = actions.select_horizontal,
-        ["<C-t>"] = actions.select_tab,
+  config = function()
+    local telescope = require("telescope")
+    local actions = require("telescope.actions")
+    local transform_mod = require("telescope.actions.mt").transform_mod
+
+    local trouble = require("trouble")
+    local trouble_telescope = require("trouble.sources.telescope")
+
+    -- or create your custom action
+    local custom_actions = transform_mod({
+      open_trouble_qflist = function(prompt_bufnr)
+        trouble.toggle("quickfix")
+      end,
+    })
+
+    telescope.setup({
+      defaults = {
+        path_display = { "smart" },
+        mappings = {
+          i = {
+            ["<C-k>"] = actions.move_selection_previous, -- move to prev result
+            ["<C-j>"] = actions.move_selection_next, -- move to next result
+            ["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
+            ["<C-t>"] = trouble_telescope.open,
+          },
+        },
       },
+    })
 
-      n = {
-        ["<C-v>"] = actions.select_vertical,
-        ["<C-h>"] = actions.select_horizontal,
-        ["<C-t>"] = actions.select_tab,
-      }
-    },
+    telescope.load_extension("fzf")
 
-    sorting_strategy = "ascending",
-    layout_strategy = "horizontal",
-    layout_config = {
-      horizontal = {
-        prompt_position = "top",
-        preview_width = 0.55,
-        results_width = 0.8,
-      },
-      vertical = {
-        mirror = false,
-      },
-      width = 0.87,
-      height = 0.80,
-      preview_cutoff = 120,
-    },
-    file_ignore_patterns = {
-      '%.git/', 'node_modules/', '%.npm/', '__pycache__/', '%[Cc]ache/',
-      '%.dropbox/', '%.dropbox_trashed/', '%.local/share/Trash/',
-      '%.py[c]', '%.sw.?', '~$', '%.tags', '%.gemtags', '%.tmp',
-      '%.plist$', '%.class$' 
-    },
-    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    color_devicons = true,
-  }
-})
+    -- set keymaps
+    local keymap = vim.keymap
 
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+    keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
+    keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
+    keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+    keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
+    keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Lists open buffers in current neovim instance" })
+    keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "List normal mode keymaps" })
+  end,
+}
